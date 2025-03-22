@@ -24,8 +24,21 @@ import fs from 'fs';
     await page.waitForSelector('.zs1fUu');
     
     console.log('Clicking the first item "Beli" button...');
-    const firstItemLink = await page.$('.sGJRNY a');
-    await firstItemLink.click();
+    
+    //Customize the targetAriaLabel to match the item you want to purchase
+    const targetAriaLabel = "Baseus WM01 TWS Bluetooth Earphones Stereo Wireless 5.3  promotion off 54% current price RM41.90 Selling Fast click, enter flash sale";
+    const items = await page.$$('.sGJRNY a');
+    for (const item of items) {
+      const ariaLabel = await page.evaluate(el => el.getAttribute('aria-label'), item);
+      
+      console
+      if (ariaLabel === targetAriaLabel) { // Trim to avoid unwanted spaces
+          console.log('Matching Aria-label found:', ariaLabel);
+          await item.click();
+          console.log('Clicked on Flash Sale item');
+          break; // Stop once the item is found and clicked
+      }
+  }
     
     console.log('Waiting for the item page to load...');
     await page.waitForSelector('.fnrLi4');
